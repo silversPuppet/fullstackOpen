@@ -5,8 +5,19 @@ const Button = ({label, onClick}) => {
     <button onClick={onClick}>{label}</button>
   )
 }
-const Statistics = (props) => {
-  const values = [props.good, props.neutral, props.bad]
+
+const Statisticline = ({text, value}) => {
+  return(
+    <tr>
+      <td>{text}:</td>
+      <td>{value}</td>
+    </tr>
+  )
+}
+
+
+const Statistics = ({good, neutral, bad}) => {
+  const values = [good, neutral, bad]
   const sum = (values) => {
     let sum = 0
     for(let i = 0; i < values.length; i++){
@@ -16,17 +27,16 @@ const Statistics = (props) => {
   }
 
   const average = () => {
-    return sum([props.good, 0, -props.bad]) / sum(values)
+    return sum([good, 0, -bad]) / sum(values)
   }
 
   const percentFirstValue = () => {
-      return (values[0] / sum(values)) * 100
+      return (values[0] / sum(values)) * 100 + "%";
   }
   if(sum(values) == 0)
   {
     return(
     <div>
-      <h1>statistics</h1>
       <p>No feedback given.</p>
     </div>
   )
@@ -34,13 +44,16 @@ const Statistics = (props) => {
   else{
     return(
       <div>
-        <h1>statistics</h1>
-        <p>good: {props.good}</p>
-        <p>neutral: {props.neutral}</p>
-        <p>bad: {props.bad}</p>
-        <p>all: {sum(values)}</p>
-        <p>average: {average()} </p>
-        <p>positive: {percentFirstValue()} %</p>
+        <table>
+          <thead>
+              <Statisticline text={"good"} value={good} />
+              <Statisticline text={"neutral"} value={neutral} />
+              <Statisticline text={"bad"} value={bad} />
+              <Statisticline text={"all"} value={sum(values)} />
+              <Statisticline text={"average"} value={average()} />
+              <Statisticline text={"positive"} value={percentFirstValue()} />
+          </thead>
+        </table>
       </div>
     )
   }
@@ -63,6 +76,7 @@ const App = () => {
       <Button label={"good"} onClick={increaseByOne(setGood, good)} />
       <Button label={"neutral"} onClick={increaseByOne(setNeutral, neutral)} />
       <Button label={"bad"} onClick={increaseByOne(setBad, bad)} />
+      <h1>statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
