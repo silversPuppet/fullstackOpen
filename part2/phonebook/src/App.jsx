@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons.jsx'
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
-import axios from 'axios'
-
-
-
+import personService from './services/persons.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -17,12 +14,8 @@ const App = () => {
 
   const personHook = () => {
     console.log("hook")
-    axios
-    .get("http://localhost:3001/persons")
-    .then(response => {
-      console.log("fulfilled")
-      setPersons(response.data)
-    })
+    personService.getAll().then(initialPersons => {
+      setPersons(initialPersons)})
   }
   useEffect(personHook, [])
 
@@ -39,14 +32,17 @@ const App = () => {
         id: persons.length + 1
       }
 
-      axios
-        .post("http://localhost:3001/persons", newPerson)
-        .then(response => {
-          const updatedPersons = persons.concat(response.data)
+      personService.create(newPerson)
+        .then(initialPersons => {
+          const updatedPersons = persons.concat(initialPersons)
           setPersons(updatedPersons)
           console.log(updatedPersons)
         })
     }
+  }
+
+  const deletePerson = (event) => {
+    
   }
   
   const handleNameChange = (event) => {
