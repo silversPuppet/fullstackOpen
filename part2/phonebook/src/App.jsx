@@ -32,12 +32,20 @@ const App = () => {
     }else{
       event.preventDefault()
       console.log('button clicked', event.target)
-      setPersons(persons.concat({
+
+      const newPerson = {
         name: newName,
         number: newNumber,
         id: persons.length + 1
-      }))
-      console.log(persons)
+      }
+
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then(response => {
+          const updatedPersons = persons.concat(response.data)
+          setPersons(updatedPersons)
+          console.log(updatedPersons)
+        })
     }
   }
   
