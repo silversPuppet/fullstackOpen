@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import countryService from './services/countries'
-import Country from './components/country'
+import Country from './components/Country'
+
 
 const App = () => {
   const [value, setValue] = useState(null)
   const [countries, setCountries] = useState([])
   const [message, setMessage] = useState(null)
+  const [detailed, setDetailed] = useState(false)
 
   useEffect(() => {
     console.log('effect run, country is now', value)
@@ -18,17 +20,21 @@ const App = () => {
       if(countriesToShow.length > 10){
         setMessage("Too many matches, specify another filter.")
         setCountries([])
+        setDetailed(false)
       }else if(countriesToShow.length > 1){
         console.log("Display list of countries.")
         setMessage(null)
         setCountries(countriesToShow)
-      }else if(countriesToShow.length == 1){
+        setDetailed(false)
+      }else if(countriesToShow.length === 1){
         console.log("Display detailed info about one country.")
         setMessage(null)
         setCountries(countriesToShow)
+        setDetailed(true)
       }else{
         setMessage("No country with the specifications found")
         setCountries([])
+        setDetailed(false)
       }
 
         
@@ -38,27 +44,50 @@ const App = () => {
     
   }, [value])
 
+  const showDetail = (event) => {
+    event.preventDefault()
+    //To implement later
+  }
+
   const handleChange = (event) => {
     event.preventDefault()
     setValue(event.target.value)
   }
-
-  return (
-    <div>
-      <h1>Countries</h1>
-        find countries: <input country={value} onChange={handleChange} />
+  if(detailed){
+    return(
       <div>
-        <p>{message}</p>
-        <ul>
-        {countries.map(country => <Country 
-          key={country.cioc}
-          country={country} 
-        />)}
-            
-        </ul>
+        <h1>Countries</h1>
+          find countries: <input country={value} onChange={handleChange} />
+        <div>
+          <p>{message}</p>
+          <Country 
+          country={countries[0]}
+          isDetailed={true}
+          showDetail={showDetail}
+          />
+        </div>
       </div>
-    </div>
-  )
+    )
+  }else{
+    return (
+      <div>
+        <h1>Countries</h1>
+          find countries: <input country={value} onChange={handleChange} />
+        <div>
+          <p>{message}</p>
+          
+          <ul>
+          {countries.map(country => <Country 
+            key={country.cca2}
+            country={country} 
+            isDetailed={false}
+            toggleShow={showDetail}
+          />)}
+          </ul>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default App
