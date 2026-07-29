@@ -21,10 +21,18 @@ const App = () => {
 
   const addPerson = (event) => {
     if(persons.some(person => person.name === newName)){
-      alert(`${newName} is already part of the phonebook.`)
+      if(window.confirm(`${newName} is already part of the phonebook. Do you wish to replace the old number with the new number?`)){
+        event.preventDefault()
+
+        const initialPerson = persons.find(person => person.name === newName)
+        const changedPerson = {...initialPerson, number: newNumber }
+
+        personService.update(changedPerson.id, changedPerson).then(initialP => {
+          setPersons(persons.map(p => p.id !== initialP.id ? p : initialP ))
+        })
+      }
     }else{
       event.preventDefault()
-      console.log('button clicked', event.target)
 
       const newPerson = {
         name: newName,
