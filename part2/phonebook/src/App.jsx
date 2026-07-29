@@ -3,12 +3,14 @@ import Persons from './components/Persons.jsx'
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import personService from './services/persons.js'
+import Notification from './components/Notification.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [updateMessage, setUpdateMessage] = useState(null)
 
   const personsToShow =  persons.filter(person => person.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) 
 
@@ -30,6 +32,10 @@ const App = () => {
         personService.update(changedPerson.id, changedPerson).then(initialP => {
           setPersons(persons.map(p => p.id !== initialP.id ? p : initialP ))
         })
+        setUpdateMessage(`Changed number of ${changedPerson.name}.`)
+          setTimeout(() => {
+            setUpdateMessage(null)
+        }, 5000)
       }
     }else{
       event.preventDefault()
@@ -45,6 +51,10 @@ const App = () => {
           const updatedPersons = persons.concat(initialPersons)
           setPersons(updatedPersons)
           console.log(updatedPersons)
+          setUpdateMessage(`Added ${newPerson.name}.`)
+          setTimeout(() => {
+            setUpdateMessage(null)
+          }, 5000)
         })
     }
   }
@@ -79,6 +89,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={updateMessage} />      
       
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 

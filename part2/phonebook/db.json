@@ -24,6 +24,16 @@
       "name": "Jonas Bowen",
       "number": "49-1708609999",
       "id": "MgXuhgHCcRQ"
+    },
+    {
+      "name": "John Conway",
+      "number": "23-41-23098881",
+      "id": "CRA58KIZiHs"
+    },
+    {
+      "name": "Lizz Conway",
+      "number": "23-41-23098800",
+      "id": "eUovQBf_mfo"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
