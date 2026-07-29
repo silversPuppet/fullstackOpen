@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [updateMessage, setUpdateMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const personsToShow =  persons.filter(person => person.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) 
 
@@ -29,13 +30,21 @@ const App = () => {
         const initialPerson = persons.find(person => person.name === newName)
         const changedPerson = {...initialPerson, number: newNumber }
 
-        personService.update(changedPerson.id, changedPerson).then(initialP => {
+        personService
+        .update(changedPerson.id, changedPerson).then(initialP => {
           setPersons(persons.map(p => p.id !== initialP.id ? p : initialP ))
-        })
-        setUpdateMessage(`Changed number of ${changedPerson.name}.`)
+          setUpdateMessage(`Changed number of ${changedPerson.name}.`)
           setTimeout(() => {
             setUpdateMessage(null)
-        }, 5000)
+          }, 5000)
+        })
+        .catch(error =>{
+          setErrorMessage(`Information of ${changedPerson.name} has already been removed from the server.`)
+          setPersons(persons.filter(p => p.id !== changedPerson.id))
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
       }
     }else{
       event.preventDefault()
@@ -90,7 +99,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification message={updateMessage} />      
+      <Notification message={errorMessage} isUpdate={false} />  
+      <Notification message={updateMessage} isUpdate={true} />      
       
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
