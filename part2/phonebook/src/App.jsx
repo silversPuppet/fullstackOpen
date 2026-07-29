@@ -41,7 +41,15 @@ const App = () => {
     }
   }
 
-  const deletePerson = (event) => {
+  const deletePerson = (id) => (event) => {
+    if(window.confirm("Are you sure you want to delete this person?")){
+      event.preventDefault()
+      personService.deleteP(id).then(initialPersons => {
+        const updatedPersons = persons.filter(initialPersons => initialPersons.id != id)
+        setPersons(updatedPersons)
+        console.log(updatedPersons)
+      })
+    }
     
   }
   
@@ -78,7 +86,7 @@ const App = () => {
 
       <h2>Numbers</h2>
   
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} deletePerson={deletePerson}/>
     </div>
   )
 }

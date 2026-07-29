@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": "1"
-    },
-    {
       "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": "2"
@@ -21,9 +16,14 @@
       "id": "4"
     },
     {
-      "name": "newName",
-      "number": "0",
-      "id": "pg_VSpvh0LE"
+      "name": "Jonathan Bowen",
+      "number": "49-1708607326",
+      "id": "n5ixDtyuwIw"
+    },
+    {
+      "name": "Jonas Bowen",
+      "number": "49-1708607327",
+      "id": "MgXuhgHCcRQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
