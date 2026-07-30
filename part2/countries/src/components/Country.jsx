@@ -2,15 +2,12 @@ import countryService from "../services/countries"
 import { useState, useEffect } from 'react'
 
 const Country = ({ country, isDetailed, showDetail  }) => {
-<<<<<<< HEAD
+
   const [weather, setWeather] = useState({
     main: {temp: null},
     weather: [{icon: null}],
     wind: {speed: null}
   })
-=======
-  const [weather, setWeather] = useState({})
->>>>>>> origin/main
 
   useEffect(() => {
     if (isDetailed) {
