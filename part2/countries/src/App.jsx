@@ -18,23 +18,13 @@ const App = () => {
         console.log(countriesToShow)
         
       if(countriesToShow.length > 10){
-        setMessage("Too many matches, specify another filter.")
-        setCountries([])
-        setDetailed(false)
+        setALL("Too many matches, specify another filter.", [], false)
       }else if(countriesToShow.length > 1){
-        console.log("Display list of countries.")
-        setMessage(null)
-        setCountries(countriesToShow)
-        setDetailed(false)
+        setALL(null, countriesToShow, false)
       }else if(countriesToShow.length === 1){
-        console.log("Display detailed info about one country.")
-        setMessage(null)
-        setCountries(countriesToShow)
-        setDetailed(true)
+        setALL(null, countriesToShow, true)
       }else{
-        setMessage("No country with the specifications found")
-        setCountries([])
-        setDetailed(false)
+        setALL("No country with the specifications found", [], false)
       }
 
         
@@ -44,9 +34,16 @@ const App = () => {
     
   }, [value])
 
-  const showDetail = (event) => {
+  const setALL = (m, c, d) =>{
+    setMessage(m)
+    setCountries(c)
+    setDetailed(d)
+  }
+
+  const showDetail = (c) => {
     event.preventDefault()
-    //To implement later
+    console.log("button")
+    setALL(null, [c], true)  
   }
 
   const handleChange = (event) => {
@@ -63,7 +60,6 @@ const App = () => {
           <Country 
           country={countries[0]}
           isDetailed={true}
-          showDetail={showDetail}
           />
         </div>
       </div>
@@ -81,7 +77,7 @@ const App = () => {
             key={country.cca2}
             country={country} 
             isDetailed={false}
-            toggleShow={showDetail}
+            showDetail={() => showDetail(country)}
           />)}
           </ul>
         </div>
